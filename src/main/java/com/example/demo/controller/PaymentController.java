@@ -46,12 +46,12 @@ public class PaymentController {
 	@SuppressWarnings("finally")
 	@PostMapping("/createOrder")
 	@ResponseBody
-	public String createOrder() {
+	public String createOrder(HttpSession session) {
 		
 		int amount = 5000;
 		Order order=null;
 		try {
-			RazorpayClient razorpay=new RazorpayClient("rzp_test_IQvo4kDJhQfYEI","C24TnnenrPF5MzVKrJwYNiwQ");
+			RazorpayClient razorpay=new RazorpayClient("rzp_test_SxVm3dHrvYkBti","AaN8aA0REKocSM74OqLY2v09");
 			
 			JSONObject orderRequest = new JSONObject();
 			orderRequest.put("amount", amount*100); 
@@ -59,7 +59,11 @@ public class PaymentController {
 			orderRequest.put("receipt","order_rcptid_11");	
 			
 			order = razorpay.orders.create(orderRequest);
-			
+			 String mail = (String) session.getAttribute("email");
+			 
+			 Users u = service.getUser(mail);
+			 u.setPremium(true);
+			 service.updateUser(u);
 			
 
 		} catch (RazorpayException e) {
