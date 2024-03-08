@@ -26,23 +26,23 @@ $(document).ready(function() {
 	});
 	});
 
-	function createOrder() {
+	function createOrder() {
 
 			$.post("/createOrder")
 			.done(function(order) {
 			order = JSON.parse(order);
 			var options = {
-			"key": "rzp_test_IQvo4kDJhQfYEI",
+			"key": "rzp_test_SxVm3dHrvYkBti",
 			"amount": order.amount_due.toString(),
 			"currency": "INR", 
-			"name": "Tune Verse Hub",
+			"name": "TempoTune",
 			"description": "Test Transaction",
 			"order_id": order.id,
 			"handler": function (response) {
 			verifyPayment(response.razorpay_order_id, response.razorpay_payment);
 			},
 			"prefill": {
-			"name": "Praveen Nendrambakam",
+			"name": "Praveen Nendrambakam",
 			"email": "praveennendrambakam@gmail.com",
 			"upi":"8309197608@oksbi",
 			"contact": "8309197608"
@@ -66,13 +66,15 @@ function verifyPayment(orderId, paymentId, signature) {
 				$. post("/verify", { orderId: orderId, paymentId: paymentId, signature: signature})
 			.done(function(isValid) {
 				if (isValid) {
-				console.log("Payment successful");
+				alert("Payment successful");
+				window.location.href = 'payment-success'
 				} else {
-				console.log("Payment failed");
+					alert("Payment failed");
+					window.location.href = 'payment-failure'
 				}
 				})
 				.fail(function(error) {
-				console.error("Error:", error);
+				console.error("Error:", error);
 				});
 	}
 </script>
